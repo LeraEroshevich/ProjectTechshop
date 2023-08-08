@@ -1,6 +1,8 @@
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static page.MainPage.TECHSHOP_URL;
 
 import compinents.RequestCallModalForm;
+import compinents.SuccessSubmissionForm;
 import page.MainPage;
 
 import org.junit.jupiter.api.Assertions;
@@ -10,15 +12,15 @@ public class FormTests extends BaseTest {
 
     @Test
     void submissionModalFormTest() {
-        RequestCallModalForm modalForm = new MainPage(getDriver())
+        RequestCallModalForm successSubmissionForm = new MainPage(getDriver())
             .open(TECHSHOP_URL)
             .getHeader()
             .clickBtnRequestCall()
-            .fillName("Test")
-            .fillPhone("331111111")
-            .fillMessage("Test")
+            .fillForm("Test", "331111111", "Test")
             .submitForm();
-        boolean successMessageDisplayed = modalForm.isSuccessMessageDisplayed();
+
+        SuccessSubmissionForm mainPage = new SuccessSubmissionForm(getDriver());
+        boolean successMessageDisplayed = mainPage.isSuccessMessageDisplayed();
         Assertions.assertTrue(successMessageDisplayed, "Successful submission message is not displayed");
     }
 
@@ -31,9 +33,9 @@ public class FormTests extends BaseTest {
             .submitForm();
 
         boolean isNameFieldRequired = modalForm.isNameFieldRequired();
-        Assertions.assertTrue(isNameFieldRequired);
+        assertTrue(isNameFieldRequired);
 
         boolean isPhoneFieldRequired = modalForm.isPhoneFieldRequired();
-        Assertions.assertTrue(isPhoneFieldRequired);
+        assertTrue(isPhoneFieldRequired);
     }
 }

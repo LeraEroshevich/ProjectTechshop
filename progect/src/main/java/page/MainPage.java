@@ -17,6 +17,7 @@ public class MainPage {
     public Header getHeader() {
         return new Header(driver);
     }
+
     public CatalogMenu getCatalogMenu() {
         return new CatalogMenu(driver);
     }
