@@ -2,6 +2,8 @@ package compinents;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,5 +61,14 @@ public class RequestCallModalForm {
     public boolean isPhoneFieldRequired() {
         String phoneFieldClass = phoneField.getAttribute("class");
         return phoneFieldClass.contains("required") && phoneFieldClass.contains("invalid");
+    }
+
+    public boolean isWindowModalFormDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(MODAL_FORM_XPATH))) != null;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }

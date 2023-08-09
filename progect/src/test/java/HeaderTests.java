@@ -1,5 +1,6 @@
 import static page.MainPage.TECHSHOP_URL;
 
+import compinents.Header;
 import compinents.RequestCallModalForm;
 import page.MainPage;
 
@@ -10,11 +11,11 @@ public class HeaderTests extends BaseTest {
 
     @Test
     void openModalForm() {
-        RequestCallModalForm mainPage = new MainPage(getDriver())
+        RequestCallModalForm header = new MainPage(getDriver())
             .open(TECHSHOP_URL)
             .getHeader()
             .clickBtnRequestCall();
-        Assertions.assertTrue(mainPage.isWindowModalFormDisplayed(), "Modal window not open");
+        Assertions.assertTrue(header.isWindowModalFormDisplayed(), "Modal window not open");
     }
 
     @Test
