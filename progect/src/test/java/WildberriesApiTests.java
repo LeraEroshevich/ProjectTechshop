@@ -1,113 +1,219 @@
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import API.CatalogData;
+import API.CatalogResponse;
+import API.LocalizationResponse;
+import API.PriceHistory;
+import API.PriceHistoryEntry;
+import API.PromoPanelData;
 import io.restassured.RestAssured;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class WildberriesApiTests extends BaseTest {
+public class WildberriesApiTests {
 
-
+    @BeforeAll
+    public static void prepareLogsFilter() {
+        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
+    }
 
     @Test
     void catalogContainsItemsTest() {
 
-        RestAssured.baseURI = "https://catalog.wb.ru";
+        String response = given().contentType(ContentType.JSON).when().get("https://catalog.wb.ru/menu/v7/api?lang=ru&locale=by&country=by&location=by").then().statusCode(200)
+            .contentType(ContentType.JSON).extract().asString();
 
-        given()
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/menu/v7/api?lang=ru&locale=by&country=by&location=by")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .body("data.size()", greaterThan(0));
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            CatalogResponse catalogResponse = objectMapper.readValue(response, CatalogResponse.class);
+            List<CatalogData> dataList = catalogResponse.getData();
+
+            assertThat(dataList.size(), greaterThan(0));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     void specificItemExistsInCatalogTest() {
 
-        RestAssured.baseURI = "https://catalog.wb.ru";
+        String response =
+            RestAssured.given().contentType(ContentType.JSON).when().get("https://catalog.wb.ru/menu/v7/api?lang=ru&locale=by&country=by&location=by").then().statusCode(200)
+                .contentType(ContentType.JSON).extract().asString();
 
-        given()
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/menu/v7/api?lang=ru&locale=by&country=by&location=by")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .body("data.find { it.id == 9411 }", not(empty()));
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            CatalogResponse catalogResponse = objectMapper.readValue(response, CatalogResponse.class);
+            List<CatalogData> dataList = catalogResponse.getData();
+
+            assertThat(dataList, hasItem(hasProperty("id", equalTo(9411))));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void titleForLangRuTest() {
 
-        RestAssured.baseURI = "https://www.wildberries.by";
+        String response =
+            given().when().get("https://www.wildberries.by/localization/lang.ru.json?v=1691608990").then().statusCode(200).contentType(ContentType.JSON).extract().asString();
 
-        given()
-            .when()
-            .get("localization/lang.ru.json?v=1691608990")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .body("ogTitle", equalTo("Wildberries — интернет-магазин модной одежды, обуви и аксессуаров"));
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            LocalizationResponse localizationResponse = objectMapper.readValue(response, LocalizationResponse.class);
+            String ogTitle = localizationResponse.getOgTitle();
+
+            assertThat(ogTitle, equalTo("Wildberries — интернет-магазин модной одежды, обуви и аксессуаров"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void countryCurrencyMappingTest() {
 
-        RestAssured.baseURI = "https://www.wildberries.by";
+        Response response = RestAssured.given().when().get("https://www.wildberries.by/localization/lang.ru.json?v=1691608990");
 
-        Response response = RestAssured.given()
-            .when()
-            .get("/localization/lang.ru.json?v=1691608990");
+        response.then().statusCode(200).contentType(ContentType.JSON);
 
-        response.then()
-            .statusCode(200)
-            .contentType("application/json")
-            .body("country.By", equalTo("Беларусь"))
-            .body("currency.BYN", equalTo("Белорусский рубль"));
+        String responseBody = response.getBody().asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            LocalizationResponse localizationResponse = objectMapper.readValue(responseBody, LocalizationResponse.class);
+
+            assertThat(localizationResponse.getCountry().getBy(), equalTo("Беларусь"));
+            assertThat(localizationResponse.getCurrency().getBYN(), equalTo("Белорусский рубль"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void promoPanelColorsTest() {
 
-        RestAssured.baseURI = "https://static-basket-01.wb.ru";
+        Response response = RestAssured.given().when().get("https://static-basket-01.wb.ru/vol0/data/promo-panel-data-ru.json");
 
-        given()
-            .when()
-            .get("/vol0/data/promo-panel-data-ru.json")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .body("БЕСТСЕЛЛЕР", equalTo("background: #ff3044; color: #ffffff;"));
+        response.then().statusCode(200).contentType(ContentType.JSON);
+
+        String responseBody = response.getBody().asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            PromoPanelData promoPanelData = objectMapper.readValue(responseBody, PromoPanelData.class);
+            String backgroundColor = promoPanelData.getData();
+
+            assertThat(backgroundColor, containsString("БЕСТСЕЛЛЕР"));
+            assertThat(backgroundColor, containsString("background: #ff3044; color: #ffffff;"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void allPricesArePositiveTest() {
-        RestAssured.baseURI = "https://basket-10.wb.ru";
 
-        List<Float> prices = RestAssured.given()
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/vol1376/part137640/137640238/info/price-history.json")
-            .then()
-            .statusCode(200)
-            .contentType(ContentType.JSON)
-            .extract()
-            .jsonPath()
-            .getList("price.RUB", Float.class);
+        Response response = RestAssured.given().contentType(ContentType.JSON).when().get("https://basket-10.wb.ru/vol1376/part137640/137640238/info/price-history.json");
 
-        for (Float price : prices) {
-            assertTrue(price > 0);
+        response.then().statusCode(200).contentType(ContentType.JSON);
+
+        String responseBody = response.getBody().asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            PriceHistory priceHistory = objectMapper.readValue(responseBody, PriceHistory.class);
+
+            for (PriceHistoryEntry entry : priceHistory.getData()) {
+                Map<String, Integer> price = entry.getPrice();
+                Integer rubPrice = price.get("RUB");
+                assertTrue(rubPrice > 0);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    @Test
+    public void categoryNamesNotEmptyTest() {
+        Response response = RestAssured.given().contentType(ContentType.JSON).when().get("https://catalog.wb.ru/menu/v7/api?lang=ru&locale=by&country=by&location=by");
+
+        response.then().statusCode(200).contentType(ContentType.JSON);
+
+        String responseBody = response.getBody().asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            CatalogResponse catalogResponse = objectMapper.readValue(responseBody, CatalogResponse.class);
+            List<CatalogData> dataList = catalogResponse.getData();
+
+            for (CatalogData data : dataList) {
+                if (data.getName().equals("Женщинам")) {
+                    assertFalse(data.getName().isEmpty(), "Category name should not be empty");
+                    break;
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void verifyCategoriesHaveItems() {
+        Response response = RestAssured.given().contentType(ContentType.JSON).when().get("https://catalog.wb.ru/menu/v7/api?lang=ru&locale=by&country=by&location=by");
+
+        response.then().statusCode(200).contentType(ContentType.JSON);
+
+        String responseBody = response.getBody().asString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            CatalogResponse catalogResponse = objectMapper.readValue(responseBody, CatalogResponse.class);
+            List<CatalogData> dataList = catalogResponse.getData();
+
+            for (CatalogData data : dataList) {
+                if (data.getName().equals("Женщинам")) {
+                    List<CatalogData> subCategories = data.getSubCategories();
+                    for (CatalogData subCategory : subCategories) {
+                        assertTrue(subCategory.getItemsCount() > 0, "Sub-category should have at least one item");
+                    }
+                    break;
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

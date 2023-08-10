@@ -46,11 +46,11 @@ public class RequestCallModalForm {
         return this;
     }
 
-    public RequestCallModalForm submitForm() {
+    public SuccessSubmissionWindow submitForm() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
-        return this;
+        return new SuccessSubmissionWindow(driver);
     }
 
     public boolean isNameFieldRequired() {

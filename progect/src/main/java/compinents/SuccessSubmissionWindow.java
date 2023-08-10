@@ -8,10 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SuccessSubmissionForm {
+public class SuccessSubmissionWindow {
     private WebDriver driver;
 
-    public SuccessSubmissionForm(WebDriver driver) {
+    public SuccessSubmissionWindow(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -23,7 +23,7 @@ public class SuccessSubmissionForm {
         wait.until(ExpectedConditions.visibilityOf(successMessage));
         return successMessage.isDisplayed() && successMessage.getText().equals("Сообщение успешно отправлено");
     }
-    public SuccessSubmissionForm getSuccessForm() {
-        return new SuccessSubmissionForm(driver);
+    public SuccessSubmissionWindow getSuccessForm() {
+        return new SuccessSubmissionWindow(driver);
     }
 }
