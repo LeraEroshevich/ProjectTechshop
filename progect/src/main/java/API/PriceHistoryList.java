@@ -2,10 +2,7 @@ package API;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PriceHistory {
+public class PriceHistoryList {
 
     private List<PriceHistoryEntry> data;
 

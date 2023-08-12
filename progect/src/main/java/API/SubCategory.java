@@ -3,8 +3,7 @@ package API;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CatalogItem {
-
+public class SubCategory {
     private int id;
     private String name;
     private String shardKey;
@@ -12,4 +11,11 @@ public class CatalogItem {
     private String query;
     private int type;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
