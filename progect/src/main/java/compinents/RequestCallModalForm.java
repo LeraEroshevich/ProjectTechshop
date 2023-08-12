@@ -12,10 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RequestCallModalForm {
-    private WebDriver driver;
-
     private static final String MODAL_FORM_XPATH = "//div[@class='modal-content last-child']//div[@class='modal-body last-child']//form//div[@class='pweb-fields']";
-
+    private WebDriver driver;
     @FindBy(xpath = MODAL_FORM_XPATH + "//input[@type='text']")
     private WebElement nameField;
     @FindBy(xpath = MODAL_FORM_XPATH + "//input[@type='tel']")
@@ -29,7 +27,6 @@ public class RequestCallModalForm {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-
 
     public RequestCallModalForm fillForm(String name, String phone, String message) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -67,7 +64,8 @@ public class RequestCallModalForm {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         try {
             return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(MODAL_FORM_XPATH))) != null;
-        } catch (TimeoutException e) {
+        }
+        catch (TimeoutException e) {
             return false;
         }
     }

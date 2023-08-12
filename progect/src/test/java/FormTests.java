@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static page.MainPage.TECHSHOP_URL;
 
+import compinents.RequestCallModalForm;
 import compinents.SuccessSubmissionWindow;
 import page.MainPage;
 
@@ -12,11 +13,7 @@ public class FormTests extends BaseTest {
     @Test
     void submissionModalFormTest() {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.open(TECHSHOP_URL)
-            .getHeader()
-            .clickBtnRequestCall()
-            .fillForm("Test", "331111111", "Test")
-            .submitForm();
+        mainPage.open(TECHSHOP_URL).getHeader().clickBtnRequestCall().fillForm("Test", "331111111", "Test").submitForm();
 
         SuccessSubmissionWindow successSubmissionForm = new SuccessSubmissionWindow(getDriver());
 
@@ -24,20 +21,19 @@ public class FormTests extends BaseTest {
         Assertions.assertTrue(successMessageDisplayed, "Successful submission message is not displayed");
     }
 
-    // @Test
-    // void checkRequiredFieldsTest() {
-    //     SuccessSubmissionWindow RequestCallModalForm = new MainPage(getDriver())
-    //         .open(TECHSHOP_URL)
-    //         .getHeader()
-    //         .clickBtnRequestCall()
-    //         .submitForm();
-    //
-    //     SuccessSubmissionWindow SuccessSubmissionWindow = new SuccessSubmissionWindow(getDriver());
-    //
-    //     boolean isNameFieldRequired = SuccessSubmissionWindow.isNameFieldRequired();
-    //     assertTrue(isNameFieldRequired);
-    //
-    //     boolean isPhoneFieldRequired = SuccessSubmissionWindow.isPhoneFieldRequired();
-    //     assertTrue(isPhoneFieldRequired);
-    // }
+    @Test
+    void checkRequiredFieldsTest() {
+        MainPage mainPage = new MainPage(getDriver());
+        RequestCallModalForm requestCallForm = mainPage.open(TECHSHOP_URL)
+            .getHeader()
+            .clickBtnRequestCall();
+            requestCallForm.submitForm();
+
+        boolean isNameFieldRequired = requestCallForm.isNameFieldRequired();
+        assertTrue(isNameFieldRequired, "Name field should be required");
+
+        boolean isPhoneFieldRequired = requestCallForm.isPhoneFieldRequired();
+        assertTrue(isPhoneFieldRequired, "Phone field should be required");
+
+    }
 }
