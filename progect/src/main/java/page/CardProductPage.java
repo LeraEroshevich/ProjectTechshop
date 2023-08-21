@@ -20,6 +20,9 @@ public class CardProductPage {
     private WebElement plusButton;
     @FindBy(xpath = "//form[@name='product']//div[@class='product-buttons last-child']//button[@type='button']")
     private WebElement buyInOneClickBtn;
+    @FindBy(xpath = "//div[@class='card last-child']//div[@class='image_middle']//button[@type='submit']")
+    private WebElement favoriteBtn;
+
     public CardProductPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -48,6 +51,11 @@ public class CardProductPage {
     public QuickOrderForm clickBuyInOneClickBtn() {
         buyInOneClickBtn.click();
         return new QuickOrderForm(driver);
+    }
+
+    public CardProductPage clickFavoriteBtn() {
+        favoriteBtn.click();
+        return new CardProductPage(driver);
     }
 
 }

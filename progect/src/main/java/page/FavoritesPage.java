@@ -1,31 +1,30 @@
 package page;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class FavoritePage {
+public class FavoritesPage {
 
     private WebDriver driver;
 
-    @FindBy(xpath = "//div[@class='wishlist  last-child']//div//div[@class='title last-child']//a")
+    @FindBy(xpath = "//div[@class='wishlist user last-child']//div//div[@class='title last-child']//a")
     private List<WebElement> favoriteProductTitles;
 
-    public FavoritePage(WebDriver driver) {
+    public FavoritesPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    public List<String> getFavoriteProductTitles() {
-        List<String> titles = new ArrayList<>();
-        for (WebElement titleElement : favoriteProductTitles) {
-            titles.add(titleElement.getText());
+    public boolean isProductInFavorites(String productName) {
+        for (WebElement title : favoriteProductTitles) {
+            if (title.getText().trim().equals(productName)) {
+                return true;
+            }
         }
-        return titles;
+        return false;
     }
 }
