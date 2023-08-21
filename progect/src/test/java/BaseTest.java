@@ -1,3 +1,5 @@
+import java.io.File;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.junit.jupiter.api.AfterEach;
@@ -25,8 +27,13 @@ public class BaseTest {
 
     @BeforeEach
     void startBrowser() {
+        File ChromeExePath =new File("D:\\QA\\chrome-win64\\chrome.exe");
+        if (ChromeExePath.exists()){
+            options.setBinary(ChromeExePath);}
+        System.setProperty("webdriver.chrome.driver","D:\\QA\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
+
     }
 
     @AfterEach

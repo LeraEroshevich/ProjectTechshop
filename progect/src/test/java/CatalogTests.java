@@ -6,14 +6,21 @@ import page.MainPage;
 import page.ProductsPage;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class CatalogTests extends BaseTest {
 
     @Test
     void outputOfProductCardsTest() {
 
         ProductsPage subcategoriesPage =
-            new MainPage(getDriver()).open(TECHSHOP_URL).getCatalogMenu().selectCatalogItem("Компьютеры и ноутбуки").selectSubcategoriesItem("/catalog/noutbuki-i-netbuki");
+            new MainPage(getDriver())
+                .open(TECHSHOP_URL)
+                .getCatalogMenu()
+                .selectCatalogItem("Компьютеры и ноутбуки")
+                .selectSubcategoriesItem("/catalog/noutbuki-i-netbuki");
 
         int productCardsCount = subcategoriesPage.getProductCardsCount();
         assertTrue(productCardsCount > 0, "Количество карточек товара равно 0");
@@ -22,7 +29,11 @@ public class CatalogTests extends BaseTest {
     @Test
     void priceFilterTest() {
         ProductsPage productsPage =
-            new MainPage(getDriver()).open(TECHSHOP_URL).getCatalogMenu().selectCatalogItem("Компьютеры и ноутбуки").selectSubcategoriesItem("/catalog/noutbuki-i-netbuki");
+            new MainPage(getDriver())
+                .open(TECHSHOP_URL)
+                .getCatalogMenu()
+                .selectCatalogItem("Компьютеры и ноутбуки")
+                .selectSubcategoriesItem("/catalog/noutbuki-i-netbuki");
 
         ProductFilter productFilter = productsPage.getProductFilter();
         productFilter.applyPriceFilter(1000, 2000);
@@ -34,4 +45,22 @@ public class CatalogTests extends BaseTest {
         assertTrue(productsPage.hasProductsInRange(1000, 2000));
 
     }
+
+    @Test
+    void manufacturerFilterTests() {
+        ProductsPage productsPage =
+            new MainPage(getDriver())
+                .open(TECHSHOP_URL)
+                .getCatalogMenu()
+                .selectCatalogItem("Телефоны")
+                .selectSubcategoriesItem("/catalog/mobilnye-telefony");
+
+        ProductFilter productFilter = productsPage.getProductFilter();
+        productFilter.clickFieldManufacturer()
+            .clickAppleFilter()
+            .clickBtnApplyFilter();
+
+        assertTrue(productsPage.areAllProductsFromManufacturer("Apple"));
+    }
+
 }

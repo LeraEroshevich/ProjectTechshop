@@ -17,8 +17,4 @@ public class HeaderTests extends BaseTest {
         Assertions.assertTrue(header.isWindowModalFormDisplayed(), "Modal window not open");
     }
 
-    @Test
-    void pageTransitionCheckTest() {
-
-    }
 }

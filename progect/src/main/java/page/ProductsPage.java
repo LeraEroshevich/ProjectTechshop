@@ -3,6 +3,7 @@ package page;
 import java.time.Duration;
 import java.util.List;
 
+import compinents.ModalDialog;
 import compinents.ProductFilter;
 
 import org.openqa.selenium.By;
@@ -18,6 +19,10 @@ public class ProductsPage {
     private WebDriver driver;
     @FindBy(xpath = "//div[@class='products']//div[@id='list_product']//div[@class='item']")
     private List<WebElement> productCardLocator;
+    @FindBy(xpath = "//div[@class='products']//div[@class='title']//a")
+    private List<WebElement> productTitles;
+    @FindBy(xpath = "//div[@id='list_product']//div[@class='byform']//button[@type='submit']")
+    private WebElement buyButton;
 
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
@@ -54,5 +59,25 @@ public class ProductsPage {
         }
 
         return true;
+    }
+
+    public boolean areAllProductsFromManufacturer(String manufacturerName) {
+        return productTitles.stream()
+            .allMatch(title -> title.getText().contains(manufacturerName));
+    }
+
+    public ModalDialog clickBuyButton() {
+        buyButton.click();
+        return new ModalDialog(driver);
+    }
+
+    public CardProductPage clickCardProduct(int index) {
+        List<WebElement> productCards = getProductCards();
+        if (index >= 0 && index < productCards.size()) {
+            productCards.get(index).click();
+            return new CardProductPage(driver);
+        } else {
+            throw new IndexOutOfBoundsException("Invalid index for product card");
+        }
     }
 }

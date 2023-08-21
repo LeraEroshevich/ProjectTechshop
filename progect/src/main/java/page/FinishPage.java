@@ -1,4 +1,4 @@
-package compinents;
+package page;
 
 import java.time.Duration;
 
@@ -9,24 +9,24 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SuccessSubmissionWindow {
-    private WebDriver driver;
+public class FinishPage {
 
-    public SuccessSubmissionWindow(WebDriver driver) {
+    private WebDriver driver;
+    @FindBy(xpath = "//div[@class='section']//div[@class='h2']")
+    private WebElement successMessage;
+
+    public FinishPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//div[@class='pweb-alert alert alert-block alert-success fade in']//p")
-    private WebElement successMessage;
+    public boolean isCorrectURL() {
+        return driver.getCurrentUrl().equals("https://techshop.by/oformlenie-zakaza/finish");
+    }
 
     public boolean isSuccessMessageDisplayed() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOf(successMessage));
-        return successMessage.isDisplayed() && successMessage.getText().equals("Сообщение успешно отправлено");
-    }
-
-    public SuccessSubmissionWindow getSuccessForm() {
-        return new SuccessSubmissionWindow(driver);
+        return successMessage.isDisplayed() && successMessage.getText().equals("Спасибо за заказ");
     }
 }
