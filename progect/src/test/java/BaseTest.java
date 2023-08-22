@@ -12,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class BaseTest {
 
     private static ChromeOptions options;
-    private WebDriver driver;
+    public WebDriver driver;
 
     @BeforeAll
     static void downloadDriver() {
@@ -27,9 +27,7 @@ public class BaseTest {
 
     @BeforeEach
     void startBrowser() {
-        File ChromeExePath =new File("D:\\QA\\chrome-win64\\chrome.exe");
-        if (ChromeExePath.exists()){
-            options.setBinary(ChromeExePath);}
+
         System.setProperty("webdriver.chrome.driver","D:\\QA\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();

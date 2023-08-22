@@ -3,6 +3,7 @@ package compinents;
 import java.time.Duration;
 
 import page.FavoritesPage;
+import page.SearchPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +21,10 @@ public class Header {
     private WebElement btnPersonalArea;
     @FindBy(xpath = "//div[@class='account']//div[@class='fav last-child']")
     private WebElement btnFavorite;
+    @FindBy(xpath = "//div[@class='row last-child']//input[@name='search']")
+    private WebElement searchInput;
+    @FindBy(xpath = "//div[@class='row last-child']//form[@name='searchForm']//button[@type='submit']")
+    private WebElement btnSearch;
 
     public Header(WebDriver driver) {
         this.driver = driver;
@@ -54,7 +59,23 @@ public class Header {
         return new FavoritesPage(driver);
     }
 
+    public Header fillSearchInput(String text) {
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(searchInput));
+
+        searchInput.clear();
+        searchInput.sendKeys(text);
+        return new Header(driver);
+    }
+
+    public SearchPage clickBtnSearch() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(btnSearch));
+
+        btnSearch.click();
+        return new SearchPage(driver);
+    }
 
 }
 
