@@ -25,6 +25,8 @@ public class Header {
     private WebElement searchInput;
     @FindBy(xpath = "//div[@class='row last-child']//form[@name='searchForm']//button[@type='submit']")
     private WebElement btnSearch;
+    @FindBy(xpath = "//div[@class='cart']//span[@class='count_products']")
+    private WebElement cartIcon;
 
     public Header(WebDriver driver) {
         this.driver = driver;
@@ -75,6 +77,11 @@ public class Header {
 
         btnSearch.click();
         return new SearchPage(driver);
+    }
+
+    public String getCartItemCount() {
+        String cartText = cartIcon.getText();
+        return cartText.replaceAll("[^0-9]", ""); // Получение только числовой части текста
     }
 
 }

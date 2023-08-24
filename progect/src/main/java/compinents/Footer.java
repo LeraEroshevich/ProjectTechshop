@@ -2,6 +2,7 @@ package compinents;
 
 import java.time.Duration;
 
+import page.SalePage;
 import page.VKPage;
 
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,8 @@ public class Footer {
 
     @FindBy(xpath = "//footer//ul[@class='soc-buttons last-child']//a//span[@class='img fab fa-vk']")
     private WebElement iconVK;
+    @FindBy(xpath = "//footer//ul[@class='nav menu last-child']//a[@href='/catalog/vygodnaya-tsena']")
+    private WebElement saleLink;
 
     public Footer(WebDriver driver) {
         this.driver = driver;
@@ -28,5 +31,12 @@ public class Footer {
         wait.until(ExpectedConditions.elementToBeClickable(iconVK));
         iconVK.click();
         return new VKPage(driver);
+    }
+
+    public SalePage clickSaleLink() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(saleLink));
+        saleLink.click();
+        return new SalePage(driver);
     }
 }

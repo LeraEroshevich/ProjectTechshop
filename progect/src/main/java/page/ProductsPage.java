@@ -22,7 +22,7 @@ public class ProductsPage {
     @FindBy(xpath = "//div[@class='products']//div[@class='title']//a")
     private List<WebElement> productTitles;
     @FindBy(xpath = "//div[@id='list_product']//div[@class='byform']//button[@type='submit']")
-    private WebElement buyButton;
+    private List<WebElement> buyButtons;
 
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
@@ -62,13 +62,7 @@ public class ProductsPage {
     }
 
     public boolean areAllProductsFromManufacturer(String manufacturerName) {
-        return productTitles.stream()
-            .allMatch(title -> title.getText().contains(manufacturerName));
-    }
-
-    public ModalDialog clickBuyButton() {
-        buyButton.click();
-        return new ModalDialog(driver);
+        return productTitles.stream().allMatch(title -> title.getText().contains(manufacturerName));
     }
 
     public CardProductPage clickCardProduct(int index) {
@@ -80,4 +74,29 @@ public class ProductsPage {
             throw new IndexOutOfBoundsException("Invalid index for product card");
         }
     }
+
+    public ModalDialog getModalDialog() {
+        return new ModalDialog(driver);
+    }
+
+    public ModalDialog clickBuyButton(int index) {
+        if (index >= 0 && index < buyButtons.size()) {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(buyButtons.get(index))).click();
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='modal-dialog']")));
+
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            return new ModalDialog(driver);
+        } else {
+            throw new IndexOutOfBoundsException("Invalid index for buy button");
+        }
+    }
+
 }

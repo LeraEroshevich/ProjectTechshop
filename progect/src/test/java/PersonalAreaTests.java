@@ -1,8 +1,6 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static page.MainPage.TECHSHOP_URL;
 
-import java.util.List;
-
 import compinents.LoginForm;
 import page.CardProductPage;
 import page.FavoritesPage;
@@ -10,7 +8,10 @@ import page.MainPage;
 import page.PersonalAreaPage;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class PersonalAreaTests extends BaseTest {
 
     @Test

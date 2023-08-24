@@ -10,7 +10,10 @@ import page.MainPage;
 import page.ProductsPage;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class CardProductTests extends BaseTest {
 
     @Test
