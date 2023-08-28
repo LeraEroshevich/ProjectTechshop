@@ -20,10 +20,9 @@ public class BasketTests extends BaseTest {
         ProductsPage productsPage = new MainPage(getDriver())
             .open(TECHSHOP_URL)
             .getCatalogMenu()
-            .selectCatalogItem("Крупная бытовая техника")
-            .selectSubcategoriesItem("/catalog/holodilniki");
-
-        CardProductPage cardProductPage = productsPage.clickCardProduct(2);
+            .selectCatalogItem("Телефоны")
+            .selectSubcategoriesItem("/catalog/mobilnye-telefony");
+        CardProductPage cardProductPage = productsPage.clickCardProduct(4);
 
         double productPrice = cardProductPage.getProductPrice();
         cardProductPage.clickPlusButton();

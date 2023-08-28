@@ -30,11 +30,9 @@ public class BaseTest {
 
     @BeforeEach
     void startBrowser() {
-
-        System.setProperty("webdriver.chrome.driver","D:\\QA\\chromedriver-win64\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-
     }
 
     @AfterEach

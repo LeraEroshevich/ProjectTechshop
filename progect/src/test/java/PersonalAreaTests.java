@@ -49,7 +49,7 @@ public class PersonalAreaTests extends BaseTest {
             .getCatalogMenu()
             .selectCatalogItem("Телефоны")
             .selectSubcategoriesItem("/catalog/mobilnye-telefony")
-            .clickCardProduct(2);
+            .clickCardProduct(4);
         String productName = cardProductPage.getProductName().trim();
         cardProductPage.clickFavoriteBtn();
         FavoritesPage favoritesPage = new MainPage(getDriver())

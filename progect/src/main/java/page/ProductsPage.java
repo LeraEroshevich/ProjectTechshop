@@ -68,7 +68,12 @@ public class ProductsPage {
     public CardProductPage clickCardProduct(int index) {
         List<WebElement> productCards = getProductCards();
         if (index >= 0 && index < productCards.size()) {
-            productCards.get(index).click();
+            WebElement productCard = productCards.get(index);
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(productCard));
+
+            productCard.click();
             return new CardProductPage(driver);
         } else {
             throw new IndexOutOfBoundsException("Invalid index for product card");

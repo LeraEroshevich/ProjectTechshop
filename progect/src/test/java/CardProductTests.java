@@ -23,10 +23,10 @@ public class CardProductTests extends BaseTest {
         ProductsPage productsPage = new MainPage(getDriver())
                 .open(TECHSHOP_URL)
                 .getCatalogMenu()
-                .selectCatalogItem("Крупная бытовая техника")
-                .selectSubcategoriesItem("/catalog/holodilniki");
+            .selectCatalogItem("Телефоны")
+            .selectSubcategoriesItem("/catalog/mobilnye-telefony");
 
-        CardProductPage cardProductPage = productsPage.clickCardProduct(2);
+        CardProductPage cardProductPage = productsPage.clickCardProduct(4);
         String productName = cardProductPage.getProductName();
         cardProductPage.clickAddToCartButton();
 
