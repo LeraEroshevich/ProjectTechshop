@@ -19,8 +19,8 @@ public class PersonalAreaTests extends BaseTest {
         LoginForm personalAreaPage = new MainPage(getDriver())
             .open(TECHSHOP_URL)
             .getHeader()
-            .clickBtnPersonalArea()
-            .fillLoginAndPasswordFields("leraeroshevich99@gmail.com", "Qwer1234!")
+            .clickBtnPersonalArea();
+        personalAreaPage.fillLoginAndPasswordFields("leraeroshevich99@gmail.com", "Qwer1234!")
             .clickSubmitBtn()
             .getHeader()
             .clickBtnPersonalArea();

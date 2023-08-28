@@ -2,8 +2,6 @@ package compinents;
 
 import java.time.Duration;
 
-import page.ProductsPage;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,12 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ProductFilter {
 
     private WebDriver driver;
-
-    public ProductFilter(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
-
     @FindBy(xpath = "//div[@class='modules_top']//input[@id='price_from']")
     private WebElement priceFromInput;
     @FindBy(xpath = "//div[@class='modules_top']//input[@id='price_to']")
@@ -30,6 +22,11 @@ public class ProductFilter {
     private WebElement fieldManufacturer;
     @FindBy(xpath = "//ul[@class='chzn-results']//li[contains(text(), 'APPLE')]")
     private WebElement appleFilter;
+
+    public ProductFilter(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
 
     public void applyPriceFilter(int from, int to) {
         priceFromInput.clear();
@@ -43,6 +40,7 @@ public class ProductFilter {
         fieldManufacturer.click();
         return new ProductFilter(driver);
     }
+
     public ProductFilter clickAppleFilter() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.elementToBeClickable(appleFilter));

@@ -18,7 +18,7 @@ public class ModalDialog {
     @FindBy(xpath = "//div[@class='modal-dialog']//button[@class='btn btn-primary']")
     private WebElement goCartBtn;
     @FindBy(xpath = "//div[@class='modal-dialog']//button[@class='btn btn-default']")
-    private WebElement ContinueShoppingBtn;
+    private WebElement continueShoppingBtn;
 
     public ModalDialog(WebDriver driver) {
         this.driver = driver;
@@ -35,9 +35,9 @@ public class ModalDialog {
 
     public ProductsPage clickContinueShoppingBtn() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.elementToBeClickable(ContinueShoppingBtn));
+        wait.until(ExpectedConditions.elementToBeClickable(continueShoppingBtn));
 
-        ContinueShoppingBtn.click();
+        continueShoppingBtn.click();
         return new ProductsPage(driver);
     }
 

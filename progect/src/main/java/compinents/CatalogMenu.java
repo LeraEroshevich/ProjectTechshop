@@ -24,7 +24,7 @@ public class CatalogMenu {
 
     public SubcategoriesPage selectCatalogItem(String catalogTitle) {
         String catalogXpath = String.format("//div[@id='column-left']//ul[@class='menu categories accordion']//a[@title='%s']", catalogTitle);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         WebElement catalogItem = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(catalogXpath)));
         catalogItem.click();
         return new SubcategoriesPage(driver);

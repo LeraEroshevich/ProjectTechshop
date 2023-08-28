@@ -1,5 +1,6 @@
 package page;
 
+import compinents.GalleryPopup;
 import compinents.QuickOrderForm;
 
 import org.openqa.selenium.WebDriver;
@@ -22,6 +23,12 @@ public class CardProductPage {
     private WebElement buyInOneClickBtn;
     @FindBy(xpath = "//div[@class='card last-child']//div[@class='image_middle']//button[@type='submit']")
     private WebElement favoriteBtn;
+    @FindBy(xpath = "//div[@class='owl-stage-outer']//div[@class='owl-item active']//a[@class='last-child']")
+    private WebElement galleryLocator;
+    @FindBy(xpath = "//div[@class='breadcrumbs']//li//a[@href='https://techshop.by/']")
+    private WebElement firstBreadcrumb;
+    @FindBy(xpath = "//div[@class='breadcrumbs']//li[@class='last-child']//span[@class='last-child']")
+    private WebElement lastBreadcrumb;
 
     public CardProductPage(WebDriver driver) {
         this.driver = driver;
@@ -56,6 +63,25 @@ public class CardProductPage {
     public CardProductPage clickFavoriteBtn() {
         favoriteBtn.click();
         return new CardProductPage(driver);
+    }
+
+    public GalleryPopup clickGallery() {
+        galleryLocator.click();
+        return new GalleryPopup(driver);
+    }
+
+    public CardProductPage clickLastBreadcrumb() {
+        lastBreadcrumb.click();
+        return new CardProductPage(driver);
+    }
+
+    public MainPage clickFirstBreadcrumb() {
+        firstBreadcrumb.click();
+        return new MainPage(driver);
+    }
+
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
     }
 
 }

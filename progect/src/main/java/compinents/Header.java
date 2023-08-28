@@ -32,7 +32,6 @@ public class Header {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-    // selectMenuItem("Доставка и оплата").click(); для Теста
 
     public WebElement selectMenuItem(String menuTitle) {
         String menuXpath = String.format("//nav[@class='menu']//a[@title='%s']", menuTitle);
@@ -62,7 +61,6 @@ public class Header {
     }
 
     public Header fillSearchInput(String text) {
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(searchInput));
 

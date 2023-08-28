@@ -14,9 +14,7 @@ public class CatalogTests extends BaseTest {
 
     @Test
     void outputOfProductCardsTest() {
-
-        ProductsPage subcategoriesPage =
-            new MainPage(getDriver())
+        ProductsPage subcategoriesPage = new MainPage(getDriver())
                 .open(TECHSHOP_URL)
                 .getCatalogMenu()
                 .selectCatalogItem("Компьютеры и ноутбуки")
@@ -28,8 +26,7 @@ public class CatalogTests extends BaseTest {
 
     @Test
     void priceFilterTest() {
-        ProductsPage productsPage =
-            new MainPage(getDriver())
+        ProductsPage productsPage = new MainPage(getDriver())
                 .open(TECHSHOP_URL)
                 .getCatalogMenu()
                 .selectCatalogItem("Компьютеры и ноутбуки")
@@ -41,15 +38,12 @@ public class CatalogTests extends BaseTest {
 
         int productsCount = productsPage.getProductCardsCount();
         assertTrue(productsCount > 0, "No products found after applying the filter");
-
         assertTrue(productsPage.hasProductsInRange(1000, 2000));
-
     }
 
     @Test
     void manufacturerFilterTests() {
-        ProductsPage productsPage =
-            new MainPage(getDriver())
+        ProductsPage productsPage = new MainPage(getDriver())
                 .open(TECHSHOP_URL)
                 .getCatalogMenu()
                 .selectCatalogItem("Телефоны")

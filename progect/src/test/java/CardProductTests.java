@@ -1,6 +1,8 @@
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static page.MainPage.TECHSHOP_URL;
 
+import compinents.GalleryPopup;
 import compinents.ModalDialog;
 import compinents.QuickOrderForm;
 import page.CardProductPage;
@@ -52,5 +54,22 @@ public class CardProductTests extends BaseTest {
         assertTrue(finishPage.isSuccessMessageDisplayed(), "Success message is not displayed.");
     }
 
+    @Test
+    void galleriesTest() {
+        ProductsPage productsPage = new MainPage(getDriver())
+            .open(TECHSHOP_URL)
+            .getCatalogMenu()
+            .selectCatalogItem("Мелкая бытовая техника")
+            .selectSubcategoriesItem("/catalog/pylesosy");
 
+        GalleryPopup galleryPopup = productsPage.clickCardProduct(2)
+            .clickGallery();
+        String currentImageSrc = galleryPopup.getCurrentImageSrc();
+
+        galleryPopup.clickArrowNext();
+
+        String newImageSrc = galleryPopup.getCurrentImageSrc();
+
+        assertNotEquals(currentImageSrc, newImageSrc, "Images in the gallery are not changing after clicking the arrow next");
+    }
 }

@@ -5,11 +5,13 @@ import page.MainPage;
 import page.SalePage;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class SaleTests extends BaseTest{
 
     @Test
-
     void profileEditingTest() {
         SalePage salePage = new MainPage(getDriver())
             .open(TECHSHOP_URL)
