@@ -30,9 +30,15 @@ public class BaseTest {
 
     @BeforeEach
     void startBrowser() {
-        System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
+        try {
+            driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
+
+        } catch (SessionNotCreatedException e) {
+            System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
+            driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
+        }
     }
 
     @AfterEach
