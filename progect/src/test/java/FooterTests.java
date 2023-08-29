@@ -18,7 +18,8 @@ public class FooterTests extends BaseTest {
     @Test
     void submissionModalFormTest() {
         WindowManager windowManager = new WindowManager(driver);
-        MainPage.open(TECHSHOP_URL)
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open(TECHSHOP_URL)
             .getFooter()
             .clickIconVK();
 

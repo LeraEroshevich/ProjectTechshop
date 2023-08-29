@@ -9,13 +9,13 @@ import org.openqa.selenium.WebDriver;
 
 public class MainPage {
     public static final String TECHSHOP_URL = "https://techshop.by/";
-    private static WebDriver driver;
+    private WebDriver driver;
 
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public static MainPage open(String url) {
+    public MainPage open(String url) {
         driver.get(url);
         return new MainPage(driver);
     }
