@@ -1,8 +1,13 @@
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.concurrent.TimeUnit;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,7 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class BaseTest {
 
     private static ChromeOptions options;
-    private WebDriver driver;
+    public WebDriver driver;
 
     @BeforeAll
     static void downloadDriver() {
@@ -25,8 +30,15 @@ public class BaseTest {
 
     @BeforeEach
     void startBrowser() {
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
+        try {
+            driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
+
+        } catch (SessionNotCreatedException e) {
+            System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
+            driver = new ChromeDriver(options);
+            driver.manage().window().maximize();
+        }
     }
 
     @AfterEach
